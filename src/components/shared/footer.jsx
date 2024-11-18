@@ -1,5 +1,10 @@
+import "../../styles/footer.css";
+
 const Footer = () => {
-  return <div>This is my Footer Component</div>;
+  return (
+    <footer>
+      <p>Copyright &copy; 2024 All Rights Reserved.</p>
+    </footer>)
 };
 
 export default Footer;

@@ -10,7 +10,7 @@ const Home = () => {
     gender: "",
     subject: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
   const handleChange = (e) => {
@@ -60,14 +60,14 @@ const Home = () => {
     }
     if (!values.confirmPassword) {
       newErrors.confirmPassword = "Confirm Password is required";
-    } else if(values.confirmPassword !== values.password) {
+    } else if (values.confirmPassword !== values.password) {
       newErrors.confirmPassword = "Password didnt matched";
     }
     return newErrors;
   };
   return (
     <div className="container">
-      <h1>Form in React</h1>
+      <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name *</label>
         <input
@@ -131,17 +131,25 @@ const Home = () => {
           <option value="physics">physics</option>
           <option value="chemistry">chemistry</option>
         </select>
-
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password"  onChange={(e) => handleChange(e)}/>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={(e) => handleChange(e)}
+        />
         {errors.password && <span className="error">{errors.password}</span>}
-
         <label htmlFor="confirmPassword">Confirm Password</label>
-        <input type="password" name="confirmPassword" id="confirmPassword"  onChange={(e) => handleChange(e)}/>
+        <input
+          type="password"
+          name="confirmPassword"
+          id="confirmPassword"
+          onChange={(e) => handleChange(e)}
+        />
         {errors.confirmPassword && (
           <span className="error">{errors.confirmPassword}</span>
         )}
-        <button>Submit</button>
+        <button className="btn btn-primary">Submit</button>
       </form>
     </div>
   );
