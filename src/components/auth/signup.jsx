@@ -49,7 +49,6 @@ const Signup = () => {
           navigate("/");
         })
         .catch((err) => {
-          console.log(err.response.data);
           toast.error(err.response.data);
         });
     } else {
@@ -66,7 +65,7 @@ const Signup = () => {
       newErrors.email = "Email address is invalid";
     }
     if (!values.contact) newErrors.contact = "Contact is required";
-   
+
     if (!values.password) {
       newErrors.password = "Password is required";
     } else if (
@@ -96,7 +95,7 @@ const Signup = () => {
           onChange={(e) => handleChange(e)}
         />
         {errors.fullName && <span className="error">{errors.fullName}</span>}
-        
+
         <label htmlFor="email">Email*</label>
         <input
           type="text"
@@ -120,7 +119,6 @@ const Signup = () => {
           type="password"
           name="password"
           placeholder="Enter Password"
-
           id="password"
           onChange={(e) => handleChange(e)}
         />

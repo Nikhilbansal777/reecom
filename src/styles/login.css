@@ -3,11 +3,16 @@ body {
   text-align: center;
 }
 
-.container form {
+.container {
   background-color: white;
   border-radius: 15px;
   box-shadow: 0 0 20px black;
-  padding: 20px;
+  padding: 10px 20px;
+  width: 50%;
+  margin-top: 20px;
+}
+
+.container form {
   width: 50%;
   text-align: center;
   margin: auto;
@@ -44,16 +49,16 @@ input[type="radio"] {
   width: 10%;
 }
 
-select{
-    display: block;
-    width: 100%;
-    margin-bottom: 18px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-  }
-  
-  .error {
-    color: red
-  }
+select {
+  display: block;
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.error {
+  color: red;
+}
