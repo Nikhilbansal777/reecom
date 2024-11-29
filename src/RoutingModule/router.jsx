@@ -12,6 +12,12 @@ import Profile from "../components/Features/profile";
 import Orders from "../components/Features/orders";
 import Cart from "../components/Features/cart";
 import AddProduct from "../components/Features/addProduct";
+import Mobile from "../components/Features/Category/Mobile";
+import Laptop from "../components/Features/Category/Laptop";
+import Clothing from "../components/Features/Category/Clothing";
+import Shoes from "../components/Features/Category/Shoes";
+import Sports from "../components/Features/Category/Sports";
+import Accessories from "../components/Features/Category/Accessories";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +30,12 @@ export const router = createBrowserRouter(
       <Route path="orders" element={<Orders />}></Route>
       <Route path="cart" element={<Cart />}></Route>
       <Route path="addProduct" element={<AddProduct />}></Route>
+      <Route path="mobile" element={<Mobile />}></Route>
+      <Route path="laptop" element={<Laptop />}></Route>
+      <Route path="shoes" element={<Shoes />}></Route>
+      <Route path="sports" element={<Sports />}></Route>
+      <Route path="accessories" element={<Accessories />}></Route>
+      <Route path="clothing" element={<Clothing />}></Route>
     </Route>
   )
 );

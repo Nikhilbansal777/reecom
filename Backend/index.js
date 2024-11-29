@@ -83,6 +83,23 @@ app.get("/api/getProducts", async (req, res) => {
   }
 });
 
+app.get("/api/getCategoryProducts/:category", async (req, res) => {
+  try {
+    const category = req.params.category;
+    const snapshot = await db
+      .collection("newProduct")
+      .where("category", "==", category)
+      .get();
+    const products = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).send(err.toString());
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
