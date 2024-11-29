@@ -10,6 +10,7 @@ const Header = () => {
     { component: "Login", path: "/login" },
     { component: "Signup", path: "/signup" },
     { component: "Profile", path: "/profile" },
+    { component: "Add Product", path: "/addProduct" },
   ]);
   return (
     <header className="site-header">

@@ -29,7 +29,8 @@ label {
   font-weight: bold;
 }
 
-input {
+input,
+textarea {
   display: block;
   width: 100%;
   padding: 8px;
@@ -44,16 +45,22 @@ input[type="radio"] {
   width: 10%;
 }
 
-select{
-    display: block;
-    width: 100%;
-    margin-bottom: 18px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-  }
-  
-  .error {
-    color: red
-  }
+select {
+  display: block;
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.error {
+  color: red;
+}
+
+
+img{
+  width: 90%;
+  height: 300px
+}

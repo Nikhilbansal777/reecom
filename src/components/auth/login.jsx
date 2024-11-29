@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const [values, setValues] = useState([{ email: "" }, { password: "" }]);
+  const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    console.log(e);
     setValues({
       ...values,
       [e.target.name]: e.target.value,
@@ -26,49 +25,37 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (Object.keys(validate()).length > 0) {
-      setErrors(validate());
-    } else {
-      setIsSubmit(true);
-      setErrors({});
-    }
+    setErrors(validate(values));
+    setIsSubmit(true);
   };
 
   useEffect(() => {
-    if (isSubmit && Object.keys(errors.length) === 0) {
+    if (isSubmit && Object.keys(errors).length === 0) {
       axios
-        .post("https:localhost:5000/api/signin", values)
+        .post("http://localhost:5000/api/signin", values)
         .then((res) => {
-          toast.success("Succesfully Login");
+          toast.success("Successfully Logged In");
           navigate("/");
         })
         .catch((err) => {
+          console.log(err)
           toast.error(err.response.data);
+
         });
     } else {
       setIsSubmit(false);
     }
   }, [isSubmit, errors, values, navigate]);
-
-  const validate = () => {
-    const newErrors = {};
-    if (!values.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(values.email)) {
-      newErrors.email = "Email format is invalid";
+  
+  const validate = (fields) => {
+    let tempErrors = {};
+    if (!fields.email) {
+      tempErrors["email"] = "Email is required";
     }
-
-    if (!values.password) {
-      newErrors.password = "Password is required";
-    } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(
-        values.password
-      )
-    ) {
-      newErrors.password = "Password format is invalid";
+    if (!fields.password) {
+      tempErrors["password"] = "Password is required";
     }
-
-    return newErrors;
+    return tempErrors;
   };
 
   return (

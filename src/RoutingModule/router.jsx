@@ -11,6 +11,7 @@ import Admin from "../components/Features/admin";
 import Profile from "../components/Features/profile";
 import Orders from "../components/Features/orders";
 import Cart from "../components/Features/cart";
+import AddProduct from "../components/Features/addProduct";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ export const router = createBrowserRouter(
       <Route path="profile" element={<Profile />}></Route>
       <Route path="orders" element={<Orders />}></Route>
       <Route path="cart" element={<Cart />}></Route>
+      <Route path="addProduct" element={<AddProduct />}></Route>
     </Route>
   )
 );
