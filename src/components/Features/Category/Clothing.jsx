@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Clothing = () => {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/getCategoryProducts/Clothing")
@@ -15,17 +16,23 @@ const Clothing = () => {
         toast.error(err.response.data);
       });
   }, []);
+
+  const productDetail = () => {
+    alert("hi");
+    navigate("/product");
+  };
+
   return (
     <div className="product-list">
       {products.map((product) => (
-        <div className="product-card" key={product.id}>
+        <div className="product-card" key={product._id}>
           <div className="product-tumb">
             <img src={product.image} alt={product.name} />
           </div>
           <div className="product-details">
-            <span className="product-catagory">{product.category}</span>
+            <span className="product-catagory"><Link to={`/product/${product._id}`}>{product.category}</Link> </span>
             <h4>
-              <Link to={`/product/${product.id}`}>{product.name}</Link>
+              <Link>{product.name}</Link>
             </h4>
             <p>{product.description}</p>
             <div className="product-bottom-details">

@@ -4,13 +4,14 @@ a {
 
 .product-list {
   display: flex;
+  cursor: pointer;
 }
 
 .product-card {
   width: 380px;
   position: relative;
   box-shadow: 0 2px 7px #dfdfdf;
-  margin: 20px ;
+  margin: 20px;
   background: #fafafa;
 }
 

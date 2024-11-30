@@ -15,6 +15,7 @@ import AddProduct from "../components/Features/addProduct";
 import Mobile from "../components/Features/Category/Mobile";
 import Laptop from "../components/Features/Category/Laptop";
 import Clothing from "../components/Features/Category/Clothing";
+import Product from "../components/Features/Product";
 import Shoes from "../components/Features/Category/Shoes";
 import Sports from "../components/Features/Category/Sports";
 import Accessories from "../components/Features/Category/Accessories";
@@ -36,6 +37,7 @@ export const router = createBrowserRouter(
       <Route path="sports" element={<Sports />}></Route>
       <Route path="accessories" element={<Accessories />}></Route>
       <Route path="clothing" element={<Clothing />}></Route>
+      <Route path="product/:id" element={<Product />}></Route>
     </Route>
   )
 );
