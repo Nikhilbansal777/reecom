@@ -17,20 +17,23 @@ const Clothing = () => {
       });
   }, []);
 
-  const productDetail = () => {
-    alert("hi");
-    navigate("/product");
+  const productDetail = (id) => {
+    navigate(`/product/${id}`);
   };
 
   return (
     <div className="product-list">
       {products.map((product) => (
-        <div className="product-card" key={product._id}>
+        <div
+          className="product-card"
+          onClick={() => productDetail(product._id)}
+          key={product._id}
+        >
           <div className="product-tumb">
             <img src={product.image} alt={product.name} />
           </div>
           <div className="product-details">
-            <span className="product-catagory"><Link to={`/product/${product._id}`}>{product.category}</Link> </span>
+            <span className="product-catagory">{product.category} </span>
             <h4>
               <Link>{product.name}</Link>
             </h4>

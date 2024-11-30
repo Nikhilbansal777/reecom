@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Shoes = () => {
-    const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/getCategoryProducts/Shoes")
@@ -15,10 +16,18 @@ const Shoes = () => {
         toast.error(err.response.data);
       });
   }, []);
+
+  const productDetail = (id) => {
+    navigate(`/product/${id}`);
+  };
   return (
     <div className="product-list">
       {products.map((product) => (
-        <div className="product-card" key={product.id}>
+        <div
+          className="product-card"
+          key={product.id}
+          onClick={() => productDetail(product._id)}
+        >
           <div className="product-tumb">
             <img src={product.image} alt={product.name} />
           </div>
@@ -44,6 +53,6 @@ const Shoes = () => {
       ))}
     </div>
   );
-}
- 
+};
+
 export default Shoes;

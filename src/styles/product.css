@@ -4,15 +4,22 @@ a {
 
 .product-list {
   display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
   cursor: pointer;
+  justify-content: center;
 }
 
 .product-card {
-  width: 380px;
+  width: 300px;
+  height: auto;
   position: relative;
-  box-shadow: 0 2px 7px #dfdfdf;
+  box-shadow: 0 2px 7px #c9c8c8;
+  border: 1px solid #999999;
   margin: 20px;
-  background: #fafafa;
+  background: #ffffff;
 }
 
 .product-tumb {

@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,7 +27,16 @@ const productSchema = new mongoose.Schema({
   image: { type: String, required: true },
 });
 
+const signupSchema = new mongoose.Schema({
+  fullName: { type: String, required: true },
+  email: { type: String, required: true },
+  contact: { type: Number, required: true },
+  password: { type: String, required: true },
+  confirmPassword: { type: String, required: true },
+});
+
 const Product = mongoose.model("Product", productSchema);
+const Signup = mongoose.model("Signup", signupSchema);
 
 app.post("/api/addProduct", async (req, res) => {
   const { productName, price, category, description, image } = req.body;
@@ -78,6 +89,53 @@ app.get("/api/getProductById/:id", async (req, res) => {
   }
 });
 
+app.post("/api/signup", async (req, res) => {
+  const { fullName, email, contact, password, confirmPassword } = req.body;
+  try {
+    const existingUser = await Signup.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedConfirmPassword = await bcrypt.hash(confirmPassword, 10);
+    const newUser = new Signup({
+      fullName,
+      email,
+      contact,
+      password: hashedPassword,
+      confirmPassword: hashedConfirmPassword,
+    });
+
+    await newUser.save();
+    const token = jwt.sign({ id: newUser._id }, "your_jwt_secret", {
+      expiresIn: "24h",
+    });
+
+    res.status(201).json({ token });
+  } catch (err) {
+    res.status(500).json({ message: "Error signing up" });
+  }
+});
+
+app.post("/api/signin", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await Signup.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+    const isPasswordValid = bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+    const token = jwt.sign({ id: user._id }, "your_jwt_secret", {
+      expiresIn: "24h",
+    });
+    res.status(200).json({ token });
+  } catch (err) {
+    res.status(500).json({ message: "Error Signin in" });
+  }
+});
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

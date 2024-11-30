@@ -11,7 +11,6 @@ const Product = () => {
     axios
       .get(`http://localhost:5000/api/getProductById/${id}`)
       .then((res) => {
-        console.log(res.data);
         setProduct(res.data);
       })
       .catch((err) => {
