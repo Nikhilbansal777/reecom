@@ -1,4 +1,5 @@
 import {
+  Navigate,
   Route,
   createBrowserRouter,
   createRoutesFromElements,
@@ -19,25 +20,41 @@ import Product from "../components/Features/Product";
 import Shoes from "../components/Features/Category/Shoes";
 import Sports from "../components/Features/Category/Sports";
 import Accessories from "../components/Features/Category/Accessories";
+import NotFound from "../components/shared/notFound";
+import ProtectedRoute from "./protectedRoute";
 
+const token = localStorage.getItem("token");
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Landing></Landing>}>
       <Route index element={<Home />}></Route>
-      <Route path="login" element={<Login />}></Route>
-      <Route path="signup" element={<Signup />}></Route>
+      {!token && (
+        <>
+          <Route path="login" element={<Login />}></Route>
+          <Route path="signup" element={<Signup />}></Route>
+          <Route path="/" element={<Login />}></Route>
+        </>
+      )}
       <Route path="admin" element={<Admin />}></Route>
-      <Route path="profile" element={<Profile />}></Route>
-      <Route path="orders" element={<Orders />}></Route>
-      <Route path="cart" element={<Cart />}></Route>
-      <Route path="addProduct" element={<AddProduct />}></Route>
+
+      <Route element={<ProtectedRoute />}>
+        <Route path="login" element={<Navigate to={"/"} />}></Route>
+        <Route path="signup" element={<Navigate to={"/"} />}></Route>
+        <Route path="orders" element={<Orders />}></Route>
+        <Route path="profile" element={<Profile />}></Route>
+        <Route path="cart" element={<Cart />}></Route>
+        <Route path="addProduct" element={<AddProduct />}></Route>
+        <Route path="product/:id" element={<Product />}></Route>
+      </Route>
+
       <Route path="mobile" element={<Mobile />}></Route>
       <Route path="laptop" element={<Laptop />}></Route>
       <Route path="shoes" element={<Shoes />}></Route>
       <Route path="sports" element={<Sports />}></Route>
       <Route path="accessories" element={<Accessories />}></Route>
       <Route path="clothing" element={<Clothing />}></Route>
-      <Route path="product/:id" element={<Product />}></Route>
+
+      <Route path="*" element={<NotFound />}></Route>
     </Route>
   )
 );

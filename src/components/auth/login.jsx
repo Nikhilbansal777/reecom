@@ -1,13 +1,16 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useState, useEffect } from 'react';
+import { login } from '../Redux/reducers/authReducer';
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setValues({
@@ -34,19 +37,17 @@ const Login = () => {
       axios
         .post("http://localhost:5000/api/signin", values)
         .then((res) => {
+          dispatch(login(res.data.token)); // Dispatch the login action
           toast.success("Successfully Logged In");
           navigate("/");
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           toast.error(err.response.data);
-
         });
-    } else {
-      setIsSubmit(false);
     }
-  }, [isSubmit, errors, values, navigate]);
-  
+  }, [isSubmit, errors, values, navigate, dispatch]);
+
   const validate = (fields) => {
     let tempErrors = {};
     if (!fields.email) {
@@ -67,7 +68,7 @@ const Login = () => {
           type="text"
           placeholder="Enter Email"
           name="email"
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
           autoComplete="off"
         />
         {errors.email && <span className="error">{errors.email}</span>}
@@ -76,7 +77,7 @@ const Login = () => {
           type="password"
           name="password"
           placeholder="Enter Password"
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
           id="password"
         />
         {errors.password && <div className="error">{errors.password}</div>}

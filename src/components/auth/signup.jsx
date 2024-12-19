@@ -45,7 +45,8 @@ const Signup = () => {
         .post("http://localhost:5000/api/signup", values)
         .then((res) => {
           toast.success("Successfully Registered User");
-          console.log(res);
+          console.log(res.data.token);
+          localStorage.setItem("token", res.data.token);
           navigate("/");
         })
         .catch((err) => {
