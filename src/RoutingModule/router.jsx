@@ -22,11 +22,13 @@ import Sports from "../components/Features/Category/Sports";
 import Accessories from "../components/Features/Category/Accessories";
 import NotFound from "../components/shared/notFound";
 import ProtectedRoute from "./protectedRoute";
+import Practice from "../components/practce";
 
 const token = localStorage.getItem("token");
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Landing></Landing>}>
+      <Route path="practice" element={<Practice/>}></Route>
       <Route index element={<Home />}></Route>
       {!token && (
         <>

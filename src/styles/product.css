@@ -49,6 +49,11 @@ a {
   margin-bottom: 18px;
 }
 
+.cart_button {
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
 .product-details h4 a {
   font-weight: 500;
   display: block;

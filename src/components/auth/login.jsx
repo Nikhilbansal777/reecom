@@ -1,9 +1,9 @@
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useState, useEffect } from 'react';
-import { login } from '../Redux/reducers/authReducer';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
+import { login, setEmail } from "../Redux/reducers/authReducer";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -24,12 +24,15 @@ const Login = () => {
         [e.target.name]: undefined,
       });
     }
+    setIsSubmit(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors(validate(values));
-    setIsSubmit(true);
+    if (Object.keys(errors).length === 0) {
+      setIsSubmit(true);
+    }
   };
 
   useEffect(() => {
@@ -37,12 +40,13 @@ const Login = () => {
       axios
         .post("http://localhost:5000/api/signin", values)
         .then((res) => {
-          dispatch(login(res.data.token)); // Dispatch the login action
+          dispatch(login(res.data.token));
+          dispatch(setEmail(values.email));
+
           toast.success("Successfully Logged In");
           navigate("/");
         })
         .catch((err) => {
-          console.log(err);
           toast.error(err.response.data);
         });
     }

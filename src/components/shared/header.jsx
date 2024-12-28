@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../../styles/header.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../Redux/reducers/authReducer";
@@ -6,6 +6,7 @@ import { logout } from "../Redux/reducers/authReducer";
 const Header = () => {
   const token = useSelector((state) => state.auth.token); // Read the token from the Redux store
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const headerItems = [
     { component: "Home", path: "/" },
@@ -25,7 +26,8 @@ const Header = () => {
       ];
 
   const onLogout = () => {
-    dispatch(logout())
+    dispatch(logout());
+    navigate("/");
   };
   return (
     <header className="site-header">
@@ -41,9 +43,11 @@ const Header = () => {
               <NavLink to={headerItem.path}>{headerItem.component}</NavLink>
             </li>
           ))}
-         {token && <li>
-            <NavLink onClick={onLogout}> Logout</NavLink>
-          </li>}
+          {token && (
+            <li>
+              <NavLink onClick={onLogout}> Logout</NavLink>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

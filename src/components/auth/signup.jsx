@@ -3,6 +3,8 @@ import "../../styles/signup.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login, setEmail } from "../Redux/reducers/authReducer";
 
 const Signup = () => {
   const [values, setValues] = useState({
@@ -15,6 +17,7 @@ const Signup = () => {
   const [errors, setErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setValues({
@@ -27,6 +30,7 @@ const Signup = () => {
         [e.target.name]: undefined,
       });
     }
+    setIsSubmit(false);
   };
 
   const handleSubmit = (e) => {
@@ -46,7 +50,8 @@ const Signup = () => {
         .then((res) => {
           toast.success("Successfully Registered User");
           console.log(res.data.token);
-          localStorage.setItem("token", res.data.token);
+          dispatch(login(res.data.token));
+          dispatch(setEmail(values.email));
           navigate("/");
         })
         .catch((err) => {

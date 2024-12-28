@@ -6,7 +6,7 @@ import "../../styles/productDetail.css";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
-
+  console.log(id);
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/getProductById/${id}`)
@@ -18,7 +18,6 @@ const Product = () => {
       });
   }, [id]);
 
-  console.log(product);
   return (
     <main className="main">
       <section className="section wrapper wrapper-section">

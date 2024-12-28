@@ -27,6 +27,16 @@ const productSchema = new mongoose.Schema({
   image: { type: String, required: true },
 });
 
+const cartSchema = new mongoose.Schema({
+  productName: { type: String, required: true },
+  price: { type: Number, required: true },
+  category: { type: String, required: true },
+  description: { type: String, required: true },
+  image: { type: String, required: true },
+  email: { type: String, required: true },
+  productId: { type: String, required: true },
+});
+
 const signupSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
@@ -37,6 +47,7 @@ const signupSchema = new mongoose.Schema({
 
 const Product = mongoose.model("Product", productSchema);
 const Signup = mongoose.model("Signup", signupSchema);
+const Cart = mongoose.model("Cart", cartSchema);
 
 app.post("/api/addProduct", async (req, res) => {
   const { productName, price, category, description, image } = req.body;
@@ -55,6 +66,60 @@ app.post("/api/addProduct", async (req, res) => {
   } catch (error) {
     console.error("Error saving product:", error);
     res.status(500).json({ message: "Error saving product" });
+  }
+});
+
+app.post("/api/saveProductInCart", async (req, res) => {
+  const { productName, price, category, description, email, image, productId } =
+    req.body;
+
+  try {
+    const existingCartItem = await Cart.findOne({ email, productId });
+    if (existingCartItem) {
+      return res.status(400).json({ message: "Product already in cart" });
+    }
+    const cartProduct = new Cart({
+      productName,
+      price,
+      category,
+      description,
+      image,
+      productId,
+      email,
+    });
+    const saveProduct = await cartProduct.save();
+    res.status(201).json(saveProduct);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "error saving product in cart" });
+  }
+});
+
+app.get("/api/getCartProducts/:email", async (req, res) => {
+  const { email } = req.params;
+  try {
+    if (!email) {
+      res.status(400).json({ message: "Please Enter Email" });
+    }
+    const cartProducts = await Cart.find({ email });
+    res.status(200).send(cartProducts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error getting cart product" });
+  }
+});
+
+app.delete("/api/deleteCartProduct/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const cartProduct = await Cart.findByIdAndDelete(id);
+    if (!cartProduct) {
+      return res.status(400).json({ message: "Product Not Found" });
+    }
+    return res.status(200).json({ message: "Product deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: "Error deleting cart product" });
   }
 });
 
@@ -136,6 +201,7 @@ app.post("/api/signin", async (req, res) => {
     res.status(500).json({ message: "Error Signin in" });
   }
 });
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
