@@ -45,9 +45,15 @@ const signupSchema = new mongoose.Schema({
   confirmPassword: { type: String, required: true },
 });
 
+const adminSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+});
+
 const Product = mongoose.model("Product", productSchema);
 const Signup = mongoose.model("Signup", signupSchema);
 const Cart = mongoose.model("Cart", cartSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
 app.post("/api/addProduct", async (req, res) => {
   const { productName, price, category, description, image } = req.body;
@@ -199,6 +205,48 @@ app.post("/api/signin", async (req, res) => {
     res.status(200).json({ token });
   } catch (err) {
     res.status(500).json({ message: "Error Signin in" });
+  }
+});
+
+app.post("/api/adminSignup", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const existingUser = await Admin.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new Admin({
+      email,
+      password: hashedPassword,
+    });
+    await newUser.save();
+    const token = jwt.sign({ id: newUser._id }, "your_jwt_secret", {
+      expiresIn: "24h",
+    });
+    res.status(201).json({ token });
+  } catch (err) {
+    res.status(500).json({ message: "Error signing up" });
+  }
+});
+
+app.post("/api/adminSignin", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await Admin.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid Admin Credentials" });
+    }
+    const isPasswordValid = bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+    const token = jwt.sign({ id: user._id }, "your_jwt_secret", {
+      expiresIn: "24h",
+    });
+    res.status(200).json({ token });
+  } catch (err) {
+    res.status(500).json({ message: "Error in admin Sign in" });
   }
 });
 

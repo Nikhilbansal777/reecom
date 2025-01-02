@@ -1,20 +1,22 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "../../styles/header.css";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../Redux/reducers/authReducer";
+import { adminLogout, logout } from "../Redux/reducers/authReducer";
 
 const Header = () => {
   const token = useSelector((state) => state.auth.token); // Read the token from the Redux store
+  const adminToken = useSelector((state) => state.auth.adminToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log(token);
 
+  console.log(adminToken);
   const headerItems = [
     { component: "Home", path: "/" },
     { component: "Cart", path: "/cart" },
     { component: "Orders", path: "/orders" },
-    { component: "Admin", path: "/admin" },
+    { component: "Admin Login", path: "/adminLogin" },
     { component: "Profile", path: "/profile" },
-    { component: "Add Product", path: "/addProduct" },
   ];
 
   const filteredHeader = token
@@ -25,10 +27,20 @@ const Header = () => {
         { component: "Signup", path: "/signup" },
       ];
 
+  const filterHeaderForAdmin = [
+    { component: "Add Product", path: "/addProduct" },
+  ];
+
   const onLogout = () => {
-    dispatch(logout());
+    if (adminToken) {
+      dispatch(adminLogout());
+    }
+    if (token) {
+      dispatch(logout());
+    }
     navigate("/");
   };
+
   return (
     <header className="site-header">
       <div className="site-identity">
@@ -43,7 +55,14 @@ const Header = () => {
               <NavLink to={headerItem.path}>{headerItem.component}</NavLink>
             </li>
           ))}
-          {token && (
+          {adminToken &&
+            filterHeaderForAdmin.map((headerItem) => (
+              <li key={headerItem.component}>
+                <NavLink to={headerItem.path}>{headerItem.component}</NavLink>
+              </li>
+            ))}
+
+          {(token || adminToken) && (
             <li>
               <NavLink onClick={onLogout}> Logout</NavLink>
             </li>

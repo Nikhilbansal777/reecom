@@ -42,7 +42,6 @@ const Login = () => {
         .then((res) => {
           dispatch(login(res.data.token));
           dispatch(setEmail(values.email));
-
           toast.success("Successfully Logged In");
           navigate("/");
         })
