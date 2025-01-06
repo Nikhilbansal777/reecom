@@ -7,6 +7,7 @@ import {
   setIsAdminLoggedIn,
 } from "../Redux/reducers/authReducer";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AdminLogin = () => {
   const [values, setValues] = useState({ email: "", password: "" });
@@ -55,10 +56,11 @@ const AdminLogin = () => {
           dispatch(adminLogin(res.data.token));
           dispatch(setAdminEmail(values.email));
           dispatch(setIsAdminLoggedIn(true));
+          toast.success("Successfully Signed in");
           navigate("/adminDashboard");
         })
-        .catch((Err) => {
-          console.log(Err);
+        .catch((err) => {
+          toast.error(err.response.data.message);
         });
     }
   }, [isSubmit, errors, values]);

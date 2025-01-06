@@ -1,0 +1,67 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.table-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  cursor: pointer;
+  justify-content: center;
+}
+
+table {
+  height: auto;
+  width: 90%;
+  margin: auto;
+  margin-top: 30px;
+  border-collapse: collapse;
+  text-align: left;
+  border: outset;
+}
+
+table.srt th {
+  position: relative;
+}
+.admin_button {
+  margin: 0;
+  padding: 1rem;
+  border: none;
+  background-color: rgb(62, 60, 60);
+  text-align: left;
+  color: white;
+  font-size: 20px;
+}
+.delete_image, .edit_image{
+  width:10%;
+  margin-left: 25px;
+  height: 25%;
+}
+
+td {
+  padding: 0.4rem;
+  text-align: left;
+}
+table.srt th button {
+  width: 100%;
+  display: inline;
+  cursor: pointer;
+}
+
+table.srt th button span {
+  width: 100%;
+  padding: 1rem;
+  position: absolute;
+}
+
+table.srt tbody tr:nth-child(odd) {
+  background: gainsboro;
+  color: black;
+}
+.cat_square {
+  width: 100px;
+}

@@ -4,18 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminLogout, logout } from "../Redux/reducers/authReducer";
 
 const Header = () => {
-  const token = useSelector((state) => state.auth.token); // Read the token from the Redux store
+  const token = useSelector((state) => state.auth.token);
   const adminToken = useSelector((state) => state.auth.adminToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(token);
-
-  console.log(adminToken);
+  
   const headerItems = [
     { component: "Home", path: "/" },
     { component: "Cart", path: "/cart" },
     { component: "Orders", path: "/orders" },
-    { component: "Admin Login", path: "/adminLogin" },
     { component: "Profile", path: "/profile" },
   ];
 
@@ -25,10 +22,12 @@ const Header = () => {
         ...headerItems,
         { component: "Login", path: "/login" },
         { component: "Signup", path: "/signup" },
+        ...(adminToken ? [] : [{ component: "Admin Login", path: "/adminLogin" }])
       ];
 
-  const filterHeaderForAdmin = [
+  const filterHeaderForAdmin = adminToken && [
     { component: "Add Product", path: "/addProduct" },
+    { component: "Admin Dashboard", path: "/adminDashboard" },
   ];
 
   const onLogout = () => {

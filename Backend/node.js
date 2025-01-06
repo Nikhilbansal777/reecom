@@ -138,6 +138,19 @@ app.get("/api/getProducts", async (req, res) => {
   }
 });
 
+app.delete("/api/deleteProduct/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findByIdAndDelete(id);
+    if (!product) {
+      return res.status(400).json({ message: "Product Not Found" });
+    }
+    return res.status(200).json({ message: "Product deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting product" });
+  }
+});
+
 app.get("/api/getCategoryProducts/:category", async (req, res) => {
   const category = req.params.category;
   try {
@@ -195,7 +208,7 @@ app.post("/api/signin", async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
-    const isPasswordValid = bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
@@ -237,7 +250,7 @@ app.post("/api/adminSignin", async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid Admin Credentials" });
     }
-    const isPasswordValid = bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }

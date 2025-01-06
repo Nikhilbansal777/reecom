@@ -1,6 +1,11 @@
+import AdminProducts from "./adminProducts";
 
 const AdminDashboard = () => {
-  return <>Admin Dashboard Works</>;
+  return (
+    <>
+      <AdminProducts />
+    </>
+  );
 };
 
 export default AdminDashboard;
