@@ -36,8 +36,9 @@ table.srt th {
   color: white;
   font-size: 20px;
 }
-.delete_image, .edit_image{
-  width:10%;
+.delete_image,
+.edit_image {
+  width: 10%;
   margin-left: 25px;
   height: 25%;
 }
@@ -62,6 +63,8 @@ table.srt tbody tr:nth-child(odd) {
   background: gainsboro;
   color: black;
 }
+
 .cat_square {
   width: 100px;
+  height: 100px;
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AddProduct = () => {
@@ -15,6 +15,7 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const { id } = useParams();
 
   const handleChange = (e) => {
     if (e.target.name === "image" && e.target.files && e.target.files[0]) {
@@ -46,26 +47,56 @@ const AddProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(values);
     setErrors(validate(values));
     setIsSubmit(true);
   };
 
   useEffect(() => {
     if (isSubmit && Object.keys(errors).length === 0) {
-      axios
-        .post("http://localhost:5000/api/addProduct", values)
-        .then((res) => {
-          toast.success("Successfully Added Product");
-          navigate("/");
-        })
-        .catch((err) => {
-          toast.error(err.response.data);
-        });
+      addEditProduct();
     } else {
       setIsSubmit(false);
     }
   }, [isSubmit, errors, values, navigate]);
+
+  const addEditProduct = async () => {
+    try {
+      if (id) {
+        await axios.put(`http://localhost:5000/api/editProduct/${id}`, values);
+        toast.success("Successfully Edited Product");
+      } else {
+        axios.post("http://localhost:5000/api/addProduct", values);
+        toast.success("Successfully Added Product");
+      }
+      navigate("/");
+    } catch (err) {
+      toast.error(err.response.data);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getProductDetail();
+    }
+  }, [id]);
+
+  const getProductDetail = () => {
+    axios
+      .get(`http://localhost:5000/api/getProductById/${id}`)
+      .then((res) => {
+        setValues({
+          productName: res.data.productName,
+          price: res.data.price,
+          description: res.data.description,
+          category: res.data.category,
+          image: res.data.image,
+        });
+        setImage(res.data.image);
+      })
+      .catch((err) => {
+        toast.error(err.response);
+      });
+  };
 
   const validate = (fields) => {
     let tempErrors = {};
@@ -100,6 +131,7 @@ const AddProduct = () => {
           placeholder="Enter Product Name"
           name="productName"
           autoComplete="off"
+          value={values.productName}
           onChange={(e) => handleChange(e)}
         />
         {errors.productName && (
@@ -110,12 +142,17 @@ const AddProduct = () => {
           type="number"
           name="price"
           placeholder="Enter Price"
+          value={values.price}
           onChange={(e) => handleChange(e)}
         />
         {errors.price && <span className="error">{errors.price}</span>}
 
         <label htmlFor="Category">Category*</label>
-        <select name="category" onChange={(e) => handleChange(e)}>
+        <select
+          name="category"
+          value={values.category}
+          onChange={(e) => handleChange(e)}
+        >
           <option value="" selected disabled>
             Select Category
           </option>
@@ -133,6 +170,7 @@ const AddProduct = () => {
         <textarea
           name="description"
           placeholder="Enter Description"
+          value={values.description}
           onChange={(e) => handleChange(e)}
         />
         {errors.description && (

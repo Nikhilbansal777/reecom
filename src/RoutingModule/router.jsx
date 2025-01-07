@@ -54,6 +54,7 @@ export const router = createBrowserRouter(
           element={<Navigate to={"/adminDashboard"} />}
         ></Route>
         <Route path="addProduct" element={<AddProduct />}></Route>
+        <Route path="addProduct/:id" element={<AddProduct />}></Route>
         <Route path="product/:id" element={<Product />}></Route>
 
         <Route path="adminDashboard" element={<AdminDashboard />}></Route>

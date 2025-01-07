@@ -151,6 +151,32 @@ app.delete("/api/deleteProduct/:id", async (req, res) => {
   }
 });
 
+app.put("/api/editProduct/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { productName, price, category, description, image } = req.body;
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        productName,
+        price,
+        category,
+        description,
+        image,
+      },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(500).json({ message: "Error editing product" });
+  }
+});
+
 app.get("/api/getCategoryProducts/:category", async (req, res) => {
   const category = req.params.category;
   try {
